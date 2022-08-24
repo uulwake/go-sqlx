@@ -72,4 +72,8 @@ func main() {
 
 	count = ItemRepository.CountAll()
 	fmt.Println("Total items after delete:", count)
+
+	order := models.Order{RecipientName: "user1", RecipientAddress: "address1", Shipper: "shipper1"}
+	OrderRepository := repositories.NewOrderRepository(db)
+	OrderRepository.CreateOrder(order, item, 10)
 }
