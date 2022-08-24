@@ -56,11 +56,10 @@ func (itemRepo ItemRepository) Create(item models.Item) {
 	log.Println("=== CREATE NEW ITEM ===")
 
 	_, err := itemRepo.db.Exec(`
-	INSERT INTO items(name, qty, weight) 
-	VALUES
-		($1, $2, $3) 
-	RETURNING id
-`, item.Name, item.Qty, item.Weight)
+		INSERT INTO items(name, qty, weight) 
+		VALUES
+			($1, $2, $3) 
+		RETURNING id`, item.Name, item.Qty, item.Weight)
 
 	if err != nil {
 		log.Fatal(err)

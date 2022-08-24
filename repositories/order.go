@@ -27,10 +27,8 @@ func (orderRepo OrderRepository) CreateOrder(order models.Order, item models.Ite
 	var orderId int
 	err = tx.QueryRow(`
 		INSERT INTO orders(recipient_name, recipient_address, shipper)
-		VALUES
-			($1, $2, $3)
-		RETURNING ID
-	`, order.RecipientName, order.RecipientAddress, order.Shipper).Scan(&orderId)
+		VALUES ($1, $2, $3)
+		RETURNING ID `, order.RecipientName, order.RecipientAddress, order.Shipper).Scan(&orderId)
 
 	if err != nil {
 		log.Fatal(err)
@@ -38,9 +36,7 @@ func (orderRepo OrderRepository) CreateOrder(order models.Order, item models.Ite
 
 	_, err = tx.Exec(`
 		INSERT INTO outbounds(item_id, order_id, qty)
-		VALUES
-			($1, $2, $3)
-	`, item.ID, orderId, orderQty)
+		VALUES ($1, $2, $3)`, item.ID, orderId, orderQty)
 	if err != nil {
 		log.Fatal(err)
 	}
